@@ -19,7 +19,7 @@ app.use(cors());
 
 //DB connection with MongoDB
 //mongoose.connect(process.env.MONGO_URL)
-const port = process.env.PORT || 4000;
+const port =  4000;
 mongoose.connect("mongodb+srv://darkrider200011:12345@cluster0.orh0ivq.mongodb.net/e-commerse")
 
 
