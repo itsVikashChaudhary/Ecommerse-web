@@ -41,25 +41,36 @@ app.get("/",(req,res)=>{
 })
 
 //Image Store Engine
+// const storage = multer.diskStorage({
+//     destination:'./upload/images',
+//     filename:(req,file,cb)=>{
+//         return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+//     }
+// })
+
 const storage = multer.diskStorage({
-    destination:'./upload/images',
-    filename:(req,file,cb)=>{
-        return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    }
-})
+    destination: '/tmp', // Use the /tmp directory
+    filename: (req, file, cb) => {
+      const uniqueFilename = `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`;
+      cb(null, uniqueFilename);
+    },
+  });
+  
+  // Rest of your code remains the same...
+  
 
 const upload = multer({storage:storage})
 
 //Creating upload Endpoint for images
-//app.use('/images',express.static("upload/images"))
+app.use('/images',express.static("upload/images"))
 // app.use('/images',express.static("./tmp/upload"))
-// app.post("/upload",upload.single('product'),(req,res)=>{
-//     res.json({
-//         success: 1,
-//         image_url: `http://localhost:${port}/images/${req.file.filename}` 
-//     });
+app.post("/upload",upload.single('product'),(req,res)=>{
+    res.json({
+        success: 1,
+        image_url: `http://localhost:${port}/images/${req.file.filename}` 
+    });
     
-// })
+})
 //Schema for Creating Products
 const Product = mongoose.model("Prouct",{
     id:{
